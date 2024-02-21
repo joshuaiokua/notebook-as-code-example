@@ -160,5 +160,5 @@ cython_debug/
 #.idea/
 
 # Personal
-personal-notebook.ipynb_checkpoints
+personal-notebook.ipynb
 Dockerfile
