@@ -1,2 +1,2 @@
 # notebook-as-code-example
-Repo to be used to test fimio demo product.
+Example repo to be used as an example workflow for Fimio's VCOW product.
