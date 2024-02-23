@@ -101,6 +101,16 @@ def extract_code_elements(code):
         'classes': classes
     }
 
+def get_code_string_from_code_elements(code_elements, keys=['functions', 'classes']):
+    """
+    Converts a dictionary of code elements into a single code string.
+    """
+    code_string = ''
+    for key in keys:
+        for code_element in code_elements[key].values():
+            code_string += code_element + '\n\n'
+    return code_string.strip()
+
 def get_class_and_function_names(code_elements: dict) -> list:
     """
     Extracts the names of classes and functions from a dictionary of code elements.
@@ -132,16 +142,22 @@ def get_estimated_class_and_function_names(response):
     
     return estimated_output
 
-def organize_with_openai(client, code_string:str, seed:int=123, model:str="gpt-4-turbo-preview"):
+def organize_with_openai(client, code_string:str, full_code_string=False, seed:int=123, model:str="gpt-4-turbo-preview"):
     """
     Organizes the code into separate python files using the OpenAI API.
 
     """
     # Set the prompt
-    description_key, content_key = "description", "content"
-    base_message = "Please group the classes and functions in the following code into separate python files. You do not have to list out the full text to be included in each python file, but please provide a simple list of what function and or class each python file contains as well as a very short description the file's basic functionality and purpose. Please provide JSON output in the following format for each file: "
-    example_output_format = "\'filename.py\': {\'description\': \'One to two sentence file description\', \'content\': [\'function1\', \'function2\', \'function3\', \'class1\', \'class2\', \'class3\']}"
+    base_message = "Please group the classes and functions defined in the following code into separate python files. You do not have to list out the full text to be included in each python file, but please provide a simple list of what function and or class each python file contains as well as a short description the file's basic functionality and purpose. Please try to group the functions and classes into as few files as possible. Please provide JSON output in the following format for each file: "
+    example_output_format = "\'filename.py\': {\'description\': \'Two-Three sentence description\', \'content\': [\'function1\', \'class1\']}"
     message = base_message + example_output_format
+
+    if full_code_string == True:
+        pass
+    else:
+        code_string = get_code_string_from_code_elements(
+            extract_code_elements(code_string)
+            )
 
     # Call the API
     response = client.chat.completions.create(
@@ -354,7 +370,7 @@ def create_github_pr(token, repo_owner, repo_name, head_branch, base_branch="mai
 
 # Deploy the notebook as code
 if __name__ == "__main__":
-    notebook_path = "example-notebook.ipynb"
+    notebook_path = "rag-example-notebook.ipynb"
     paths = deploy_notebook_as_code(notebook_path)
     print(paths)
 
