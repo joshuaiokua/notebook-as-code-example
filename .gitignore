@@ -162,3 +162,4 @@ cython_debug/
 # Personal
 personal-notebook.ipynb
 Dockerfile
+rag-example/
