@@ -163,3 +163,4 @@ cython_debug/
 personal-notebook.ipynb
 Dockerfile
 rag-example/
+*.vscode/
