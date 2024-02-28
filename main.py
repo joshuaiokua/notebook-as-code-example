@@ -12,7 +12,7 @@ import io
 
 load_dotenv()
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI()
 
 def get_code_from_notebook(notebook_path):
     """
